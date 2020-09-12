@@ -23,7 +23,8 @@ namespace PromotionEngine.Test
                 new KeyValuePair<char, int>('D',15)
             };
             priceTable = new Dictionary<char, int>(priceList);
-            handler = new PromotionHandler(new PromotionA());
+            handler = new PromotionHandler(new PromotionA(),
+                            new PromotionB());
         }
 
         [Test]
@@ -43,7 +44,7 @@ namespace PromotionEngine.Test
         {
             var items = new List<char>
             {
-                'A','B','C'
+                'A','A','A','A','A','B','B','B','B','B','C'
             };
             var cart = new Cart();
             cart.Items = GetSkuList(items);
