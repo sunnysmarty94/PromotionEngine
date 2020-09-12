@@ -11,25 +11,34 @@ namespace PromotionEngine.Handler.PromotionHandlers
     {
         public int Handle(ref Cart cart)
         {
-            int value = 0;
-            var unprocessedA = cart.Items
-                                .Where(x => x.Name == 'A' && x.isProcessed == false)
-                                .ToList();
-            var loop = unprocessedA.Count / 3;
-            var skip = 0;
-            for (var i = 0; i <= loop; i++)
+            try
             {
-                var processingList = unprocessedA.Skip(skip).Take(3);
-                if (processingList.Count() < 3)
-                    break;
+                int value = 0;
+                var unprocessedA = cart.Items
+                                    .Where(x => x.Name == 'A' && x.isProcessed == false)
+                                    .ToList();
+                var loop = unprocessedA.Count / 3;
+                var skip = 0;
+                for (var i = 0; i <= loop; i++)
+                {
+                    var processingList = unprocessedA.Skip(skip).Take(3);
+                    if (processingList.Count() < 3)
+                        break;
                     foreach (var p in processingList)
                     {
                         p.isProcessed = true;
                     }
                     value += 130;
-                skip += 3;
+                    skip += 3;
+                }
+                return value;
             }
-            return value;
+            catch (Exception)
+            {
+                Console.WriteLine("Exception occured while applying"+ this.GetType().Name);
+                throw;
+            }
+            
         }
     }
 }

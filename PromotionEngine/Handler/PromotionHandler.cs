@@ -21,20 +21,29 @@ namespace PromotionEngine.Handler
         }
         public int Handle(ref Cart cart)
         {
-            int totalValue = 0;
-            foreach (var receiver in receivers)
+            try
             {
-                if (!cart.Items.Exists(i => i.isProcessed == false))
-                    break;
-                totalValue += receiver.Handle(ref cart);
+                int totalValue = 0;
+                foreach (var receiver in receivers)
+                {
+                    if (!cart.Items.Exists(i => i.isProcessed == false))
+                        break;
+                    totalValue += receiver.Handle(ref cart);
 
-            }
-            var pendingItems = cart.Items.Where(i => i.isProcessed == false).ToList();
-            if (pendingItems.Count == 0)
+                }
+                var pendingItems = cart.Items.Where(i => i.isProcessed == false).ToList();
+                if (pendingItems.Count == 0)
+                    return totalValue;
+                var val = pendingItems.Sum(s => s.Price);
+                totalValue += val;
                 return totalValue;
-            var val = pendingItems.Sum(s => s.Price);
-            totalValue += val;
-            return totalValue;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Exception occured while applying promotions");
+                return -1;
+            }
+
         }
 
         public void SetNext(IReceiver<Cart> next)
