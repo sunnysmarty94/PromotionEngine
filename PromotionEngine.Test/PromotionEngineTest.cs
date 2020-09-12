@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using PromotionEngine.Entities;
 using PromotionEngine.Handler;
+using PromotionEngine.Handler.Interface;
 using PromotionEngine.Handler.PromotionHandlers;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace PromotionEngine.Test
     {
         private Dictionary<char, int> priceTable;
         private List<KeyValuePair<char, int>> priceList;
+        private List<IReceiver<Cart>> activePromotions;
         private PromotionHandler handler;
         [SetUp]
         public void Setup()
@@ -23,8 +25,15 @@ namespace PromotionEngine.Test
                 new KeyValuePair<char, int>('D',15)
             };
             priceTable = new Dictionary<char, int>(priceList);
+            activePromotions = new List<IReceiver<Cart>>
+            {
+                new PromotionA(),
+                new PromotionB(),
+                new PromotionCD()
+            };
             handler = new PromotionHandler(new PromotionA(),
-                            new PromotionB());
+                new PromotionB(),
+                new PromotionCD());
         }
 
         [Test]
@@ -55,7 +64,13 @@ namespace PromotionEngine.Test
         [Test]
         public void Case3()
         {
-            int actualOrderValue = 10;//
+            var items = new List<char>
+            {
+                'A','A','A','B','B','B','B','B','C','D'
+            };
+            var cart = new Cart();
+            cart.Items = GetSkuList(items);
+            int actualOrderValue = handler.Handle(ref cart);
             Assert.AreEqual(280, actualOrderValue);
         }
 
