@@ -31,14 +31,9 @@ namespace PromotionEngine
             };
 
             var val = handler.Handle(ref cart);
-            if (val == 205)
-            {
-                Console.WriteLine("Hurray!! Your promotions applied.Happy Saving");
-            }
-            else
-            {
-                Console.WriteLine("There something wrong with your bill. Please contact admin.");
-            }
+            var msg = val == 205 ? "Hurray!! Your promotions applied.Happy Saving"
+                                : "There something wrong with your bill. Please contact admin.";
+            Console.WriteLine(msg);
         }
     }
 }

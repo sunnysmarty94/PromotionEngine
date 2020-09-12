@@ -24,23 +24,16 @@ namespace PromotionEngine.Handler
             int totalValue = 0;
             foreach (var receiver in receivers)
             {
-                Console.WriteLine($"Running: {receiver.GetType().Name}");
-
-                if (cart.Items.Exists(i => i.isProcessed == false))
-                {
-                    totalValue += receiver.Handle(ref cart);
-                }
-                else
-                {
+                if (!cart.Items.Exists(i => i.isProcessed == false))
                     break;
-                }
+                totalValue += receiver.Handle(ref cart);
+
             }
             var pendingItems = cart.Items.Where(i => i.isProcessed == false).ToList();
-            if (pendingItems.Count > 0)
-            {
-                var val = pendingItems.Sum(s => s.Price);
-                totalValue += val;
-            }
+            if (pendingItems.Count == 0)
+                return totalValue;
+            var val = pendingItems.Sum(s => s.Price);
+            totalValue += val;
             return totalValue;
         }
 
