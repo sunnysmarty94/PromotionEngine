@@ -15,6 +15,10 @@ namespace PromotionEngine.Handler
             this.receivers = receivers;
         }
 
+        public PromotionHandler()
+        {
+            this.receivers = new List<IReceiver<Cart>>();
+        }
         public int Handle(ref Cart cart)
         {
             int totalValue = 0;
