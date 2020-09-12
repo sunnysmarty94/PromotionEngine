@@ -7,9 +7,17 @@ using System.Text;
 
 namespace PromotionEngine.Handler
 {
+    /// <summary>
+    /// Promotion execution engine.
+    /// </summary>
     public class PromotionHandler
     {
         private readonly IList<IReceiver<Cart>> receivers;
+
+        /// <summary>
+        /// Accepts array of Active promotions
+        /// </summary>
+        /// <param name="receivers"></param>
         public PromotionHandler(params IReceiver<Cart>[] receivers)
         {
             this.receivers = receivers;
@@ -19,6 +27,11 @@ namespace PromotionEngine.Handler
         {
             this.receivers = new List<IReceiver<Cart>>();
         }
+        /// <summary>
+        /// This will execute all the active promotions on items in cart and return the final value 
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <returns></returns>
         public int Handle(ref Cart cart)
         {
             try
@@ -46,6 +59,10 @@ namespace PromotionEngine.Handler
 
         }
 
+        /// <summary>
+        /// Add promotion to be applied on the cart item
+        /// </summary>
+        /// <param name="next"></param>
         public void SetNext(IReceiver<Cart> next)
         {
             receivers.Add(next);
