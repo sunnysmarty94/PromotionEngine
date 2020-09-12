@@ -17,19 +17,17 @@ namespace PromotionEngine.Handler.PromotionHandlers
                                 .Where(x => x.Name == 'C' && x.isProcessed == false);
             var unprocessedD = cart.Items
                                 .Where(x => x.Name == 'D' && x.isProcessed == false);
-            if (unprocessedC.Count() > 0 && unprocessedD.Count() > 0)
+            if (unprocessedC.Count() == 0 || unprocessedD.Count() == 0)
+                return value;
+            var minPair = Math.Min(unprocessedC.Count(), unprocessedD.Count());
+            for (var i = 0; i < minPair; i++)
             {
-                var minPair = Math.Min(unprocessedC.Count(), unprocessedD.Count());
-                for (var i = 0; i < minPair; i++)
-                {
-                    var skuC = unprocessedC.First(x => x.isProcessed == false && x.Name == 'C');
-                    var skuD = unprocessedD.First(x => x.isProcessed == false && x.Name == 'D');
-                    skuC.isProcessed = true;
-                    skuD.isProcessed = true;
-                    value += 30;
-                }
+                var skuC = unprocessedC.First(x => x.isProcessed == false && x.Name == 'C');
+                var skuD = unprocessedD.First(x => x.isProcessed == false && x.Name == 'D');
+                skuC.isProcessed = true;
+                skuD.isProcessed = true;
+                value += 30;
             }
-
             return value;
         }
     }

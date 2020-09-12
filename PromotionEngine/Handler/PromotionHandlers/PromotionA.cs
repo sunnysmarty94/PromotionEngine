@@ -20,14 +20,13 @@ namespace PromotionEngine.Handler.PromotionHandlers
             for (var i = 0; i <= loop; i++)
             {
                 var processingList = unprocessedA.Skip(skip).Take(3);
-                if (processingList.Count() == 3)
-                {
+                if (processingList.Count() < 3)
+                    break;
                     foreach (var p in processingList)
                     {
                         p.isProcessed = true;
                     }
                     value += 130;
-                }
                 skip += 3;
             }
             return value;
